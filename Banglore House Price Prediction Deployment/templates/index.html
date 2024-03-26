@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bangalore House Price Predictor ML App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrHBciiswSnsOBznSK6NVnpG1gPKsHiAVK5A&usqp=CAU'); /* Replace 'background_image.jpg' with the path to your background image */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      margin-top: 20px;
+      text-align: center;
+    }
+    input[type="number"],
+    input[type="text"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .custom-select {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .button_css {
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      padding: 12px 40px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: calc(100% - 20px);
+      max-width: 222px;
+      margin: 10px auto;
+      white-space: nowrap; /* Ensures button text stays on a single line */
+      overflow: hidden; /* Hides any overflowed text */
+      text-overflow: ellipsis; /* Shows an ellipsis (...) to indicate text overflow */
+    }
+    .button_css:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bangalore House Price Predictor</h1>
+    <form action="{{ url_for('predict')}}" method="post">
+      <select name="Bathrooms" required class="custom-select">
+          <option value="" disabled selected>Bathrooms</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+      </select><br>
+      <select name="Balcony" required class="custom-select">
+          <option value="" disabled selected>Balcony</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+      </select><br>
+      <input type="number" name="total_sqft_int" placeholder="Total Square Foot" required><br>
+      <select name="BHK" required class="custom-select">
+          <option value="" disabled selected>BHK</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+      </select><br>
+      <input type="number" name="price_per_sqft" placeholder="Price Per Square Foot" required><br>
+      <select name="Area Type" required class="custom-select">
+          <option value="" disabled selected>Area Type</option>
+          <option value="Super built-up Area">Super built-up Area</option>
+          <option value="Built-up Area">Built-up Area</option>
+          <option value="Plot Area">Plot Area</option>
+      </select><br>
+      <select name="House Availability" required class="custom-select">
+          <option value="" disabled selected>House Availability</option>
+          <option value="Ready To Move">Ready To Move</option>
+          <option value="Not Ready To Move">Not Ready To Move</option>
+      </select><br>
+      <select name="House location" required class="custom-select">
+          <option value="" disabled selected>House Location</option>
+          <option value="Whitefield">Whitefield</option>
+          <option value="Sarjapur Road">Sarjapur Road</option>
+          <option value="Electronic City">Electronic City</option>
+          <option value="Raja Rajeshwari Nagar">Raja Rajeshwari Nagar</option>
+          <option value="Marathahalli">Marathahalli</option>
+          <option value="Haralur Road">Haralur Road</option>
+          <option value="Hennur Road">Hennur Road</option>
+          <option value="Uttarahalli">Uttarahalli</option>
+          <option value="Bannerghatta Road">Bannerghatta Road</option>
+          <option value="Thanisandra">Thanisandra</option>
+          <option value="Electronic City Phase II">Electronic City Phase II</option>
+          <option value="7th Phase JP Nagar">7th Phase JP Nagar</option>
+          <option value="Hebbal">Hebbal</option>
+          <option value="Yelahanka">Yelahanka</option>
+          <option value="Kanakpura Road">Kanakpura Road</option>
+          <option value="KR Puram">KR Puram</option>
+          <option value="Sarjapur">Sarjapur</option>
+          <option value="Kasavanhalli">Kasavanhalli</option>
+          <option value="Bellandur">Bellandur</option>
+          <option value="Begur Road">Begur Road</option>
+          <option value="Rajaji Nagar">Rajaji Nagar</option>
+          <option value="Kothanur">Kothanur</option>
+          <option value="Banashankari">Banashankari</option>
+          <option value="Electronics City Phase 1">Electronics City Phase 1</option>
+          <option value="Hormavu">Hormavu</option>
+          <option value="Harlur">Harlur</option>
+          <option value="Akshaya Nagar">Akshaya Nagar</option>
+          <option value="Varthur">Varthur</option>
+          <option value="Jakkur">Jakkur</option>
+          <option value="Hennur">Hennur</option>
+          <option value="HSR Layout">HSR Layout</option>
+          <option value="Ramamurthy Nagar">Ramamurthy Nagar</option>
+          <option value="Chandapura">Chandapura</option>
+          <option value="Kaggadasapura">Kaggadasapura</option>
+          <option value="Koramangala">Koramangala</option>
+          <option value="Ramagondanahalli">Ramagondanahalli</option>
+          <option value="Kundalahalli">Kundalahalli</option>
+          <option value="Hulimavu">Hulimavu</option>
+          <option value="Budigere">Budigere</option>
+          <option value="8th Phase JP Nagar">8th Phase JP Nagar</option>
+          <option value="Malleshwaram">Malleshwaram</option>
+          <option value="Hoodi">Hoodi</option>
+          <option value="Hegde Nagar">Hegde Nagar</option>
+          <option value="Gottigere">Gottigere</option>
+          <option value="Channasandra">Channasandra</option>
+          <option value="Hosa Road">Hosa Road</option>
+          <option value="Bisuvanahalli">Bisuvanahalli</option>
+          <option value="JP Nagar">JP Nagar</option>
+          <option value="Vittasandra">Vittasandra</option>
+          <option value="Indira Nagar">Indira Nagar</option>
+          <option value="Yeshwanthpur">Yeshwanthpur</option>
+          <option value="Sahakara Nagar">Sahakara Nagar</option>
+          <option value="Vijayanagar">Vijayanagar</option>
+          <option value="Brookefield">Brookefield</option>
+          <option value="Kengeri">Kengeri</option>
+          <option value="Old Airport Road">Old Airport Road</option>
+          <option value="Panathur">Panathur</option>
+          <option value="Bommasandra">Bommasandra</option>
+          <option value="Green Glen Layout">Green Glen Layout</option>
+          <option value="Kudlu Gate">Kudlu Gate</option>
+          <option value="Old Madras Road">Old Madras Road</option>
+          <option value="Jigani">Jigani</option>
+          <option value="Thigalarapalya">Thigalarapalya</option>
+          <option value="Yelahanka New Town">Yelahanka New Town</option>
+          <option value="Rachenahalli">Rachenahalli</option>
+          <option value="Ambedkar Nagar">Ambedkar Nagar</option>
+          <option value="Dodda Nekkundi">Dodda Nekkundi</option>
+          <option value="Mysore Road">Mysore Road</option>
+          <option value="Kadugodi">Kadugodi</option>
+          <option value="Attibele">Attibele</option>
+          <option value="Frazer Town">Frazer Town</option>
+          <option value="Balagere">Balagere</option>
+          <option value="TC Palaya">TC Palaya</option>
+          <option value="Talaghattapura">Talaghattapura</option>
+          <option value="Kanakapura">Kanakapura</option>
+          <option value="Nagarbhavi">Nagarbhavi</option>
+          <option value="5th Phase JP Nagar">5th Phase JP Nagar</option>
+          <option value="Lakshminarayana Pura">Lakshminarayana Pura</option>
+          <option value="Anekal">Anekal</option>
+          <option value="Ananth Nagar">Ananth Nagar</option>
+          <option value="Jalahalli">Jalahalli</option>
+          <option value="Devanahalli">Devanahalli</option>
+          <option value="CV Raman Nagar">CV Raman Nagar</option>
+          <option value="Kudlu">Kudlu</option>
+          <option value="Kalena Agrahara">Kalena Agrahara</option>
+          <option value="Kengeri Satellite Town">Kengeri Satellite Town</option>
+          <option value="Bhoganhalli">Bhoganhalli</option>
+          <option value="Doddathoguru">Doddathog
+      </select><br>
+      <button type="submit" class="button_css">Predict Price</button> <!-- Adjusted button text -->
+    </form>
+    <div class="output">
+      <h2>{{ prediction_text }}</h2>
+    </div>
+  </div>
+</body>
+</html>
